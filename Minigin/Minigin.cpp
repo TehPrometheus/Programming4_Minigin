@@ -95,6 +95,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	while (!quit)
 	{
 		TIMER.UpdateDt();
+		TIMER.UpdateFPS();
 
 		lag += TIMER.m_Dt;
 

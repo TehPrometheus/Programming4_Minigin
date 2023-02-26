@@ -1,6 +1,10 @@
 #include "BaseComponent.h"
 
-dae::BaseComponent::BaseComponent(Transform transform)
-	: m_Transform(transform)
+dae::BaseComponent::BaseComponent()
 {
+}
+
+void dae::BaseComponent::SetParentObject(GameObject* parentObj)
+{
+	m_ParentObject = parentObj;
 }

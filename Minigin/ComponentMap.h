@@ -5,6 +5,7 @@
 template <typename  ComponentType>
 class ComponentMap
 {
+	class BaseComponent;
 public:
 	typedef typename std::unordered_map<int, ComponentType>::iterator iterator;
 	typedef typename std::unordered_map<int, ComponentType>::const_iterator const_iterator;
@@ -21,8 +22,8 @@ public:
 	template <typename Key>
 	const_iterator find() const { return m_Map.find(GetTypeId<Key>()); }
 
-	template <typename Key>
-	void add(ComponentType&& value) { m_Map[GetTypeId<Key>()] = std::forward<ComponentType>(value); }
+	template <typename Key, typename ValueType>
+	void add(ValueType value) { m_Map[GetTypeId<Key>()] = value; }
 
 	template <typename Key>
 	bool erase();
@@ -35,3 +36,28 @@ private:
 	std::unordered_map<int, ComponentType> m_Map;
 };
 
+template<typename ValueType>
+std::atomic_int ComponentMap<ValueType>::LastTypeId(0);
+
+template<typename ComponentType>
+template<typename Key>
+bool ComponentMap<ComponentType>::erase()
+{
+	auto it{ m_Map.find(GetTypeId<Key>()) };
+
+	if (it != m_Map.end())
+	{
+		m_Map.erase(it);
+		return true;
+	}
+
+	return false;
+}
+
+template<typename ValueType>
+template<typename Key>
+int ComponentMap<ValueType>::GetTypeId()
+{
+	static const int id = LastTypeId++;
+	return id;
+}

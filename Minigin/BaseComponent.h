@@ -1,19 +1,21 @@
 #pragma once
-#include "Transform.h"
+#include "Renderer.h"
 
 namespace dae
 {
+	class GameObject;
+
 	class BaseComponent
 	{
 	public:
-		BaseComponent(Transform transform);
+		BaseComponent();
 		virtual ~BaseComponent() = default;
 
 		virtual void Update() = 0;
 		virtual void Render() const = 0;
-
+		void SetParentObject(dae::GameObject* parentObj);
 
 	protected:
-		Transform m_Transform;
+		dae::GameObject* m_ParentObject{nullptr};
 	};
 }

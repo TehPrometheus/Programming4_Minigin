@@ -91,12 +91,13 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	double lag{};
 	bool quit{ false };
 	const double fixedDt{ TIMER.m_FixedDt };
+	auto lastTime{ high_resolution_clock::now() };
 
 	while (!quit)
 	{
-		TIMER.UpdateDt();
-		TIMER.UpdateFPS();
-
+		TIMER.Update();
+		//TIMER.UpdateDt();
+		//TIMER.UpdateFPS();
 		lag += TIMER.m_Dt;
 
 		quit = input.ProcessInput();

@@ -8,7 +8,6 @@ namespace dae
 {
 	class Texture2D;
 	class BaseComponent;
-	// todo: this should become final.
 	class GameObject 
 	{
 	public:

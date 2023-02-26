@@ -1,10 +1,28 @@
 #include "Timer.h"
+#include <SDL.h>
+
+Timer::Timer()
+{
+	const uint64_t countPerSecond = SDL_GetPerformanceFrequency();
+	m_SecondsPerCount = 1.f / static_cast<float>(countPerSecond);
+}
+
+void Timer::Update()
+{
+	UpdateDt();
+	UpdateFPS();
+}
 
 void Timer::UpdateDt()
 {
-	auto newCurrentTime{ high_resolution_clock::now() };
-	m_Dt = duration<double>(newCurrentTime - currentTime).count();
-	currentTime = newCurrentTime;
+	m_CurrentTime = SDL_GetPerformanceCounter();
+	//m_Dt = static_cast<float>(m_CurrentTime - m_PreviousTime) * m_SecondsPerCount;
+	float test{ static_cast<float>(0.002) };
+	m_Dt = test;
+	std::cout << m_Dt << std::endl;
+	m_PreviousTime = m_CurrentTime;
+	if (m_Dt < 0.f)
+		m_Dt = 0.f;
 }
 
 void Timer::UpdateFPS()

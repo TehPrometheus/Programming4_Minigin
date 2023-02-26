@@ -9,6 +9,10 @@
 #include "SceneManager.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
+#include <chrono>
+#include "Timer.h"
+
+using namespace std::chrono;
 
 SDL_Window* g_window{};
 
@@ -83,12 +87,27 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
-	// todo: this update loop could use some work.
-	bool doContinue = true;
-	while (doContinue)
+
+	double lag{};
+	bool quit{ false };
+	const double fixedDt{ TIMER.m_FixedDt };
+
+	while (!quit)
 	{
-		doContinue = input.ProcessInput();
-		sceneManager.Update();
+		TIMER.UpdateDt();
+
+		lag += TIMER.m_Dt;
+
+		quit = input.ProcessInput();
+
+		while (lag >= fixedDt)
+		{
+			sceneManager.Update();
+			lag -= fixedDt;
+		}
+
+		TIMER.m_FrameFraction = lag / fixedDt; // how far we are in the next frame expressed in units of fixedDt
+
 		renderer.Render();
 	}
 }

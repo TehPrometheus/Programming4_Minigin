@@ -22,6 +22,6 @@ private:
 
 	steady_clock::time_point currentTime{};
 
-	void UpdateDt(steady_clock::time_point newCurrentTime);
+	void UpdateDt();
 };
 

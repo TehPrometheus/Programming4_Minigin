@@ -16,6 +16,10 @@ namespace dae
 		void SetParentObject(dae::GameObject* parentObj);
 
 	protected:
+		//todo: this should be private. pass the owner to the constructor of the component
+		//todo: add a protected getter for it
+		//todo: remove the setter
+
 		dae::GameObject* m_ParentObject{nullptr};
 	};
 }

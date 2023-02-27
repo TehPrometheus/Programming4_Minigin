@@ -96,7 +96,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	while (!quit)
 	{
 		TIMER.Update();
-
 		lag += TIMER.m_Dt;
 
 		quit = input.ProcessInput();
@@ -110,5 +109,9 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		TIMER.m_FrameFraction = lag / fixedDt; // how far we are in the next frame expressed in units of fixedDt
 
 		renderer.Render();
+
+		//todo: add sleep timer because you don't want to max out the CPU just to render a 
+		//const auto sleepTime = currentTime + milliseconds(frameTimeMs) - high_resolution_clock::now();
+		//this_thread::sleep_for(sleepTime);
 	}
 }

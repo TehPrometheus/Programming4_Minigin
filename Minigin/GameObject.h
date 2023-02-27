@@ -36,6 +36,8 @@ namespace dae
 
 	private:
 		Transform m_Transform{};
+
+		//todo: change this to storing smartpointers
 		ComponentMap<BaseComponent*> m_Components;
 	};
 
@@ -64,6 +66,7 @@ namespace dae
 	bool dae::GameObject::RemoveComponent()
 	{
 		return m_Components.erase<ComponentType>();
+		//todo: this leaks. You're not deleting the data the pointer is pointing to!
 	}
 
 }

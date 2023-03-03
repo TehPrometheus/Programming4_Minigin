@@ -11,7 +11,7 @@ namespace dae
 	class TextObject: public BaseComponent
 	{
 	public:
-		TextObject(const std::string& text, std::shared_ptr<Font> font);
+		TextObject(const std::string& text, std::shared_ptr<Font> font, GameObject* pOwner);
 		virtual ~TextObject() override = default ;
 
 		TextObject(const TextObject& other) = delete;

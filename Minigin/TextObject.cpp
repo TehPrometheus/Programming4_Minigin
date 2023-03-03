@@ -7,15 +7,19 @@
 #include "Texture2D.h"
 #include "Timer.h"
 
-dae::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font) 
-	: m_needsUpdate(true), m_Text(text), m_Font(std::move(font)), m_TextTexture(nullptr)
+dae::TextObject::TextObject(const std::string& text, std::shared_ptr<Font> font, GameObject* pOwner)
+	:	BaseComponent(pOwner),
+		m_Text(text),
+		m_needsUpdate(true),
+		m_Font(std::move(font)),
+		m_TextTexture(nullptr)
 { }
 
 void dae::TextObject::Update()
 {
 	if (m_needsUpdate)
 	{
-		const SDL_Color color = { 255,255,255 }; // only white text is supported now
+		constexpr SDL_Color color = { 255,255,255 }; // only white text is supported now
 		const auto surf = TTF_RenderText_Blended(m_Font->GetFont(), m_Text.c_str(), color);
 		if (surf == nullptr) 
 		{
@@ -36,7 +40,7 @@ void dae::TextObject::Render() const
 {
 	if (m_TextTexture != nullptr)
 	{
-		const auto& pos = m_ParentObject->GetTransform().GetPosition();
+		const auto& pos = GetOwner()->GetTransform().GetPosition();
 		Renderer::GetInstance().RenderTexture(*m_TextTexture, pos.x, pos.y);
 	}
 }
@@ -50,7 +54,7 @@ void dae::TextObject::SetText(const std::string& text)
 
 void dae::TextObject::SetPosition(const float x, const float y)
 {
-	m_ParentObject->GetTransform().SetPosition(x, y, 0.0f);
+	GetOwner()->GetTransform().SetPosition(x, y, 0.0f);
 }
 
 

@@ -2,8 +2,8 @@
 #include "Timer.h"
 #include <iostream>
 
-dae::FPSCounter::FPSCounter(const std::string& text, std::shared_ptr<Font> font)
-	:TextObject(text,font)
+dae::FPSCounter::FPSCounter(const std::string& text, std::shared_ptr<Font> font, GameObject* pOwner)
+	:TextObject(text,font, pOwner)
 {
 }
 

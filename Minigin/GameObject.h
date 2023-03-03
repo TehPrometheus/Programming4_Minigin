@@ -44,7 +44,6 @@ namespace dae
 	template <typename ComponentType>
 	void GameObject::AddComponent(BaseComponent* c)
 	{
-		c->SetParentObject(this);
 		m_Components.add<ComponentType, BaseComponent*>(c);
 	}
 

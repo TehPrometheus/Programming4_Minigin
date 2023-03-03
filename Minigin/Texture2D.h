@@ -13,7 +13,7 @@ namespace dae
 	{
 	public:
 		explicit Texture2D(SDL_Texture* texture);
-		explicit Texture2D(const std::string& filename);
+		explicit Texture2D(const std::string& filename, GameObject* pOwner);
 		~Texture2D() override;
 
 		Texture2D(const Texture2D &) = delete;

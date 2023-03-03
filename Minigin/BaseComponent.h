@@ -8,18 +8,18 @@ namespace dae
 	class BaseComponent
 	{
 	public:
-		BaseComponent();
+		BaseComponent(GameObject* pOwner) : m_Owner(pOwner) {}
+		BaseComponent() = default;
 		virtual ~BaseComponent() = default;
 
 		virtual void Update() = 0;
 		virtual void Render() const = 0;
-		void SetParentObject(dae::GameObject* parentObj);
 
 	protected:
-		//todo: this should be private. pass the owner to the constructor of the component
-		//todo: add a protected getter for it
-		//todo: remove the setter
+		GameObject* GetOwner() const { return m_Owner; }
 
-		dae::GameObject* m_ParentObject{nullptr};
+	private:
+
+		GameObject* m_Owner{nullptr};
 	};
 }

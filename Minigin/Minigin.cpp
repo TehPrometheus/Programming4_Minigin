@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
+#include <thread>
 #include "Minigin.h"
 #include "InputManager.h"
 #include "SceneManager.h"
@@ -88,30 +89,16 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& input = InputManager::GetInstance();
 
 
-	double lag{};
 	bool quit{ false };
-	const double fixedDt{ TIMER.m_FixedDt };
-	auto lastTime{ high_resolution_clock::now() };
 
 	while (!quit)
 	{
 		TIMER.Update();
-		lag += TIMER.m_Dt;
 
 		quit = input.ProcessInput();
-
-		while (lag >= fixedDt)
-		{
-			sceneManager.Update();
-			lag -= fixedDt;
-		}
-
-		TIMER.m_FrameFraction = lag / fixedDt; // how far we are in the next frame expressed in units of fixedDt
-
+		sceneManager.Update();
 		renderer.Render();
 
-		//todo: add sleep timer because you don't want to max out the CPU just to render a 
-		//const auto sleepTime = currentTime + milliseconds(frameTimeMs) - high_resolution_clock::now();
-		//this_thread::sleep_for(sleepTime);
+		TIMER.Sleep();
 	}
 }

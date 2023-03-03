@@ -4,13 +4,12 @@
 #include "GameObject.h"
 #include "ResourceManager.h"
 dae::Texture2D::Texture2D(SDL_Texture* texture)
-	: BaseComponent()
 {
 	m_texture = texture;
 }
 
-dae::Texture2D::Texture2D(const std::string& filename)
-	:BaseComponent()
+dae::Texture2D::Texture2D(const std::string& filename, GameObject* pOwner)
+	:BaseComponent(pOwner)
 {
 	SetTexture(filename);
 }
@@ -22,7 +21,7 @@ dae::Texture2D::~Texture2D()
 
 void dae::Texture2D::Render() const
 {
-	const auto& pos{ m_ParentObject->GetTransform().GetPosition() };
+	const auto& pos{ GetOwner()->GetTransform().GetPosition() };
 	Renderer::GetInstance().RenderSDLTexture(m_texture, pos.x, pos.y);
 }
 

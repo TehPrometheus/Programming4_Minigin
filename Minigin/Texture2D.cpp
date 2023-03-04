@@ -21,7 +21,7 @@ dae::Texture2D::~Texture2D()
 
 void dae::Texture2D::Render() const
 {
-	const auto& pos{ GetOwner()->GetTransform().GetPosition() };
+	const auto& pos{ GetOwner()->GetTransform()->GetPosition() };
 	Renderer::GetInstance().RenderSDLTexture(m_texture, pos.x, pos.y);
 }
 

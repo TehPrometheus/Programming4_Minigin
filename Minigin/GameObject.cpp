@@ -1,6 +1,13 @@
 #include "GameObject.h"
 #include <functional>
 
+#include "Texture2D.h"
+
+dae::GameObject::GameObject(const float x, const float y, const float z)
+{
+	AddComponent<dae::Transform>(new Transform(this, x, y, z));
+}
+
 dae::GameObject::~GameObject()
 {
 	for (auto c: m_Components)
@@ -28,5 +35,10 @@ void dae::GameObject::Render() const
 
 void dae::GameObject::SetPosition(float x, float y)
 {
-	m_Transform.SetPosition(x, y, 0.0f);
+	GetTransform()->SetPosition(x, y, 0.0f);
+}
+
+dae::Transform* dae::GameObject::GetTransform() const
+{
+	return GetComponent<Transform>();
 }

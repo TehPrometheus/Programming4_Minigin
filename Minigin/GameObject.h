@@ -11,19 +11,19 @@ namespace dae
 	class GameObject 
 	{
 	public:
-		GameObject() = default;
+		GameObject(const float x = 0, const float y = 0, const float z = 0);
 		virtual ~GameObject();
-
-		virtual void Update();
-		virtual void Render() const;
 
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		virtual void Update();
+		virtual void Render() const;
+
 		void SetPosition(float x, float y);
-		[[nodiscard]] Transform GetTransform() const { return m_Transform; }
+		[[nodiscard]] Transform* GetTransform() const;
 
 		template <typename ComponentType>
 		void AddComponent(BaseComponent* c);
@@ -35,8 +35,6 @@ namespace dae
 		bool RemoveComponent();
 
 	private:
-		Transform m_Transform{};
-
 		//todo: change this to storing smartpointers
 		ComponentMap<BaseComponent*> m_Components;
 	};
@@ -57,15 +55,14 @@ namespace dae
 			throw ComponentNotFoundException();
 		}
 
-		return it->second;
+		return static_cast<ComponentType*>(it->second);
 	}
 
-	// Returns true if removal took place
+	// Returns true if removal took place, frees component memory
 	template <typename ComponentType>
 	bool dae::GameObject::RemoveComponent()
 	{
 		return m_Components.erase<ComponentType>();
-		//todo: this leaks. You're not deleting the data the pointer is pointing to!
 	}
 
 }

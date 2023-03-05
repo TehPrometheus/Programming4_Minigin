@@ -40,7 +40,7 @@ void dae::TextObject::Render() const
 {
 	if (m_TextTexture != nullptr)
 	{
-		const auto& pos = GetOwner()->GetTransform()->GetPosition();
+		const auto& pos = GetOwner()->GetTransform()->GetWorldPosition();
 		Renderer::GetInstance().RenderTexture(*m_TextTexture, pos.x, pos.y);
 	}
 }
@@ -54,7 +54,7 @@ void dae::TextObject::SetText(const std::string& text)
 
 void dae::TextObject::SetPosition(const float x, const float y)
 {
-	GetOwner()->SetPosition(x, y);
+	GetOwner()->SetWorldPosition(x, y);
 }
 
 

@@ -6,9 +6,6 @@
 struct SDL_Texture;
 namespace dae
 {
-	/**
-	 * Simple RAII wrapper for an SDL_Texture
-	 */
 	class Texture2D final: public BaseComponent
 	{
 	public:
@@ -28,7 +25,9 @@ namespace dae
 		[[nodiscard]] glm::ivec2 GetSize() const;
 		[[nodiscard]] SDL_Texture* GetSDLTexture() const;
 
+		void SetSize(int width, int height);
 	private:
-		SDL_Texture* m_texture{nullptr};
+		SDL_Rect m_DestRect{};
+		SDL_Texture* m_Texture{nullptr};
 	};
 }

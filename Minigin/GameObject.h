@@ -3,6 +3,8 @@
 #include "BaseComponent.h"
 #include "ComponentMap.h"
 #include "Exceptions.h"
+#include <vector>
+#include <set>
 
 namespace dae
 {
@@ -19,12 +21,17 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		// General Methods
 		virtual void Update();
-		virtual void Render() const;
-
-		void SetPosition(float x, float y);
+		virtual void Render() const; //todo: make this a render component
+		void SetWorldPosition(float x, float y);
 		[[nodiscard]] Transform* GetTransform() const;
 
+		// Scenegraph related methods
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		GameObject* GetParent() const { return m_Parent; }
+
+		// Component related methods
 		template <typename ComponentType>
 		void AddComponent(BaseComponent* c);
 
@@ -35,8 +42,12 @@ namespace dae
 		bool RemoveComponent();
 
 	private:
-		//todo: change this to storing smartpointers
-		ComponentMap<BaseComponent*> m_Components;
+		void AddChild(GameObject* child);
+		void RemoveChild(GameObject* child);
+		//todo: change this to storing smart pointers
+		ComponentMap<BaseComponent*> m_Components{};
+		std::set<GameObject*> m_Children{};
+		GameObject* m_Parent{ nullptr };
 	};
 
 	template <typename ComponentType>

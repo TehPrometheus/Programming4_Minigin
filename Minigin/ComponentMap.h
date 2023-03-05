@@ -47,6 +47,7 @@ bool ComponentMap<ComponentType>::erase()
 
 	if (it != m_Map.end())
 	{
+		delete it->second;
 		m_Map.erase(it);
 		return true;
 	}

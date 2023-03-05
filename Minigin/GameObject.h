@@ -3,6 +3,8 @@
 #include "BaseComponent.h"
 #include "ComponentMap.h"
 #include "Exceptions.h"
+#include <vector>
+#include <set>
 
 namespace dae
 {
@@ -11,20 +13,25 @@ namespace dae
 	class GameObject 
 	{
 	public:
-		GameObject() = default;
+		GameObject(const float x = 0, const float y = 0, const float z = 0);
 		virtual ~GameObject();
-
-		virtual void Update();
-		virtual void Render() const;
 
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
-		void SetPosition(float x, float y);
-		[[nodiscard]] Transform GetTransform() const { return m_Transform; }
+		// General Methods
+		virtual void Update();
+		virtual void Render() const; //todo: make this a render component
+		void SetWorldPosition(float x, float y);
+		[[nodiscard]] Transform* GetTransform() const;
 
+		// Scenegraph related methods
+		void SetParent(GameObject* parent, bool keepWorldPosition);
+		GameObject* GetParent() const { return m_Parent; }
+
+		// Component related methods
 		template <typename ComponentType>
 		void AddComponent(BaseComponent* c);
 
@@ -35,10 +42,12 @@ namespace dae
 		bool RemoveComponent();
 
 	private:
-		Transform m_Transform{};
-
-		//todo: change this to storing smartpointers
-		ComponentMap<BaseComponent*> m_Components;
+		void AddChild(GameObject* child);
+		void RemoveChild(GameObject* child);
+		//todo: change this to storing smart pointers
+		ComponentMap<BaseComponent*> m_Components{};
+		std::set<GameObject*> m_Children{};
+		GameObject* m_Parent{ nullptr };
 	};
 
 	template <typename ComponentType>
@@ -57,15 +66,14 @@ namespace dae
 			throw ComponentNotFoundException();
 		}
 
-		return it->second;
+		return static_cast<ComponentType*>(it->second);
 	}
 
-	// Returns true if removal took place
+	// Returns true if removal took place, frees component memory
 	template <typename ComponentType>
 	bool dae::GameObject::RemoveComponent()
 	{
 		return m_Components.erase<ComponentType>();
-		//todo: this leaks. You're not deleting the data the pointer is pointing to!
 	}
 
 }

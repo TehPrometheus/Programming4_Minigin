@@ -26,7 +26,7 @@ public:
 	void add(ValueType value) { m_Map[GetTypeId<Key>()] = value; }
 
 	template <typename Key>
-	bool erase();
+	bool erase(bool freeMemory);
 
 private:
 	template <typename Key>
@@ -41,13 +41,14 @@ std::atomic_int ComponentMap<ValueType>::LastTypeId(0);
 
 template<typename ComponentType>
 template<typename Key>
-bool ComponentMap<ComponentType>::erase()
+bool ComponentMap<ComponentType>::erase(bool freeMemory)
 {
 	auto it{ m_Map.find(GetTypeId<Key>()) };
 
 	if (it != m_Map.end())
 	{
-		delete it->second;
+		if(freeMemory)
+			delete it->second;
 		m_Map.erase(it);
 		return true;
 	}

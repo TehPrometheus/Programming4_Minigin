@@ -18,6 +18,9 @@ dae::GameObject::~GameObject()
 
 void dae::GameObject::Update()
 {
+	//todo: if the game object owns it's children, it should also update it
+	// If it doesn't own its children then your scene should be updating them, and your gameobject does not own the children
+	// ask yourself: should a parent own it's children
 	for (auto c: m_Components)
 	{
 		c.second->Update();
@@ -48,11 +51,11 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 		transform->SetPositionFlag(true);
 	}
 
-	if(m_Parent)
-		m_Parent->RemoveChild(this);
-	m_Parent = parent;
-	if (m_Parent)
-		m_Parent->AddChild(this);
+	if(m_pParent)
+		m_pParent->RemoveChild(this);
+	m_pParent = parent;
+	if (m_pParent)
+		m_pParent->AddChild(this);
 }
 
 void dae::GameObject::SetWorldPosition(float x, float y)

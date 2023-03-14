@@ -17,6 +17,8 @@ void dae::Transform::SetWorldPosition(float x, float y, float z)
 
 void dae::Transform::SetLocalPosition(float x, float y, float z)
 {
+	//todo: you're not setting children dirty
+
 	m_LocalPosition.x = x;
 	m_LocalPosition.y = y;
 	m_LocalPosition.z = z;

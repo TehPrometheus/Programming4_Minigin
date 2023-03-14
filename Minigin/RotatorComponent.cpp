@@ -12,6 +12,7 @@ dae::RotatorComponent::RotatorComponent(GameObject* pOwner, glm::vec2 center, fl
 
 void dae::RotatorComponent::Update()
 {
+	//todo: this functionality should be changed to "rotate around your parent"
 	m_CurrentAngle += m_AngularVelocity * static_cast<float>(TIMER.GetDt());
 
 	if(GetOwner()->GetParent() == nullptr)

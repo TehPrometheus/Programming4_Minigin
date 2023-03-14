@@ -40,3 +40,8 @@ void Scene::Render() const
 	}
 }
 
+// todo: need to make a DeleteGameObject method, this is what we were referring to with 'RemoveChild'.
+// You need to remove this also from the scene if you want full deletion.
+// or implement removal from parent objects in scene delete of object. Should remove from scene
+// Think about how Unity does this: 1) it destroys it completely. 2) it destroys the children.
+// Right now, this memory isn't released

@@ -29,7 +29,7 @@ namespace dae
 
 		// Scenegraph related methods
 		void SetParent(GameObject* parent, bool keepWorldPosition);
-		GameObject* GetParent() const { return m_Parent; }
+		GameObject* GetParent() const { return m_pParent; }
 
 		// Component related methods
 		template <typename ComponentType>
@@ -39,7 +39,7 @@ namespace dae
 		[[nodiscard]] ComponentType* GetComponent() const;
 
 		template <typename ComponentType>
-		bool RemoveComponent();
+		bool RemoveComponent(bool freeMemory);
 
 	private:
 		void AddChild(GameObject* child);
@@ -47,7 +47,7 @@ namespace dae
 		//todo: change this to storing smart pointers
 		ComponentMap<BaseComponent*> m_Components{};
 		std::set<GameObject*> m_Children{};
-		GameObject* m_Parent{ nullptr };
+		GameObject* m_pParent{ nullptr };
 	};
 
 	template <typename ComponentType>
@@ -71,9 +71,9 @@ namespace dae
 
 	// Returns true if removal took place, frees component memory
 	template <typename ComponentType>
-	bool dae::GameObject::RemoveComponent()
+	bool dae::GameObject::RemoveComponent(bool freeMemory)
 	{
-		return m_Components.erase<ComponentType>();
+		return m_Components.erase<ComponentType>(freeMemory);
 	}
 
 }

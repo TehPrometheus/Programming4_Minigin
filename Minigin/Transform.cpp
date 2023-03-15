@@ -5,7 +5,8 @@
 dae::Transform::Transform(GameObject* pOwner, float x, float y, float z)
 	:BaseComponent(pOwner)
 {
-	SetWorldPosition(x, y, z);
+	//SetWorldPosition(x, y, z);
+	SetLocalPosition(x, y, z);
 }
 
 void dae::Transform::SetWorldPosition(float x, float y, float z)
@@ -17,13 +18,23 @@ void dae::Transform::SetWorldPosition(float x, float y, float z)
 
 void dae::Transform::SetLocalPosition(float x, float y, float z)
 {
-	//todo: you're not setting children dirty
-
 	m_LocalPosition.x = x;
 	m_LocalPosition.y = y;
 	m_LocalPosition.z = z;
 
+	SetDirty();
+}
+
+void dae::Transform::SetDirty()
+{
+	//todo: Alex feedback
 	m_PositionIsDirty = true;
+
+	for(auto& child : GetOwner()->GetChildren())
+	{
+		child->GetTransform()->SetDirty();
+	}
+
 }
 
 void dae::Transform::UpdateWorldPosition()

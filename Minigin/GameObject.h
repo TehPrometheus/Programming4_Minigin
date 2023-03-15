@@ -13,7 +13,7 @@ namespace dae
 	class GameObject 
 	{
 	public:
-		GameObject(const float x = 0, const float y = 0, const float z = 0);
+		GameObject(float x = 0, float y = 0, float z = 0);
 		virtual ~GameObject();
 
 		GameObject(const GameObject& other) = delete;
@@ -28,8 +28,9 @@ namespace dae
 		[[nodiscard]] Transform* GetTransform() const;
 
 		// Scenegraph related methods
-		void SetParent(GameObject* parent, bool keepWorldPosition);
-		GameObject* GetParent() const { return m_pParent; }
+		void SetParent(GameObject* parent, bool keepWorldPosition = true);
+		[[nodiscard]] GameObject* GetParent() const { return m_pParent; }
+		[[nodiscard]] std::set<GameObject*> GetChildren() const { return m_Children; }
 
 		// Component related methods
 		template <typename ComponentType>
@@ -42,12 +43,11 @@ namespace dae
 		bool RemoveComponent(bool freeMemory);
 
 	private:
+		GameObject* m_pParent{ nullptr };
+		std::set<GameObject*> m_Children{};
+		ComponentMap<BaseComponent*> m_Components{};
 		void AddChild(GameObject* child);
 		void RemoveChild(GameObject* child);
-		//todo: change this to storing smart pointers
-		ComponentMap<BaseComponent*> m_Components{};
-		std::set<GameObject*> m_Children{};
-		GameObject* m_pParent{ nullptr };
 	};
 
 	template <typename ComponentType>

@@ -23,7 +23,7 @@ namespace dae
 		[[nodiscard]] bool GetPositionFlag() const { return m_PositionIsDirty; }
 		void SetWorldPosition(float x, float y, float z = 0);
 		void SetLocalPosition(float x, float y, float z = 0);
-		void SetPositionFlag(bool isDirty) {m_PositionIsDirty = isDirty;}
+		void SetDirty();
 
 	private:
 		glm::vec3 m_WorldPosition{};

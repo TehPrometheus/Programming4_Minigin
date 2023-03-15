@@ -3,7 +3,7 @@
 #include "Exceptions.h"
 #include "Texture2D.h"
 
-dae::GameObject::GameObject(const float x, const float y, const float z)
+dae::GameObject::GameObject(float x, float y, float z)
 {
 	AddComponent<dae::Transform>(new Transform(this, x, y, z));
 }
@@ -21,10 +21,11 @@ void dae::GameObject::Update()
 	//todo: if the game object owns it's children, it should also update it
 	// If it doesn't own its children then your scene should be updating them, and your gameobject does not own the children
 	// ask yourself: should a parent own it's children
-	for (auto c: m_Components)
+	for (auto& c: m_Components)
 	{
 		c.second->Update();
 	}
+
 }
 
 void dae::GameObject::Render() const
@@ -48,7 +49,7 @@ void dae::GameObject::SetParent(GameObject* parent, bool keepWorldPosition)
 			auto pos{ transform->GetLocalPosition() - parent->GetTransform()->GetWorldPosition() };
 			transform->SetLocalPosition(pos.x, pos.y, pos.z);
 		}
-		transform->SetPositionFlag(true);
+		transform->SetDirty();
 	}
 
 	if(m_pParent)

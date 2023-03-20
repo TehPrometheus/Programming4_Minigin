@@ -99,6 +99,6 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		sceneManager.Update();
 		renderer.Render();
 
-		TIMER.Sleep();
+		//TIMER.Sleep(); functionality replaced by SDL_GL_SetSwapInterval() in Renderer
 	}
 }

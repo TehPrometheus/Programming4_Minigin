@@ -53,8 +53,8 @@ void dae::Renderer::Render() const
 	//todo: featured on the feedback. minute 26. Put it in a component. They need to live on objects.
 	//Scenemanager::GetInstance.RenderUI(); should be like this
 	//TrashTheCacheComponent could do the calculations. RenderUIComponent then renders the UI elements
-	ImGuiAssignment::GetInstance().Exercise1();
-	ImGuiAssignment::GetInstance().Exercise2();
+	//ImGuiAssignment::GetInstance().Exercise1();
+	//ImGuiAssignment::GetInstance().Exercise2();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

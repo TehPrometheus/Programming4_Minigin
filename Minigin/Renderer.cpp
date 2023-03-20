@@ -4,8 +4,9 @@
 #include "Texture2D.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_opengl2.h"
-#include "imgui/imgui_impl_sdl2.h"
-
+#include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_plot.h"
+#include "ImGuiAssignment.h"
 int GetOpenGLDriverIndex()
 {
 	auto openglIndex = -1;
@@ -29,6 +30,8 @@ void dae::Renderer::Init(SDL_Window* window)
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
 
+	SetVSync(true);
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
@@ -46,7 +49,13 @@ void dae::Renderer::Render() const
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_window);
 	ImGui::NewFrame();
-	ImGui::ShowDemoWindow();
+
+	//todo: featured on the feedback. minute 26. Put it in a component. They need to live on objects.
+	//Scenemanager::GetInstance.RenderUI(); should be like this
+	//TrashTheCacheComponent could do the calculations. RenderUIComponent then renders the UI elements
+	ImGuiAssignment::GetInstance().Exercise1();
+	ImGuiAssignment::GetInstance().Exercise2();
+
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
@@ -100,3 +109,14 @@ void dae::Renderer::RenderTexture(const Texture2D& texture,const SDL_Rect& dstRe
 }
 
 inline SDL_Renderer* dae::Renderer::GetSDLRenderer() const { return m_renderer; }
+
+void dae::Renderer::SetVSync(bool isVSyncOn)
+{
+	const int result = SDL_GL_SetSwapInterval(isVSyncOn); // 1 : Enable Vsync, 0: Disable Vsync
+	if (result != 0)
+	{
+		throw std::runtime_error(std::string("SDL_GL_SetSwapInterval Error: ") + SDL_GetError());
+	}
+}
+
+

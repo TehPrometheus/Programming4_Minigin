@@ -20,9 +20,11 @@ void Scene::Add( GameObject* object)
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::DeleteGameObject( GameObject* object)
+void Scene::DeleteGameObject(GameObject* object)
 {
-	//todo: Alex Feedback
+	//todo: Don't pass in a unique ptr, that won't work. Just pass in a raw pointer and then
+	// search in your vector of unique ptr for a match. If a match is found, erase that object from the list and its
+	// children
 	if (object->GetParent())
 		object->SetParent(nullptr);
 
